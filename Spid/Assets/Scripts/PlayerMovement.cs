@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,10 +14,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float airMultiplier;
     private bool readyToJump;
 
-    [Header("Key binds")]
-    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
-
-
     [Header("Ground Check")]
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask whatIsGround;
@@ -24,15 +21,27 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Transform orientation;
 
-    private float horizontalInput;
-    private float verticalInput;
-
     private Vector3 moveDirection;
 
     private Rigidbody rb;
 
-    private void Start(){
+    PlayerInputActions playerActions;
+
+    private void Awake(){
         rb = GetComponent<Rigidbody>();
+
+        //Crear el input
+        playerActions = new PlayerInputActions();
+        //Activar el mapa de entrada de jugador
+        playerActions.Player.Enable();
+
+        //Subscripciones a eventos
+        //Subscripcion al evento de saltar
+        playerActions.Player.Jump.performed += Jump;
+    }
+
+    private void Start(){
+        
         rb.freezeRotation = true;
         readyToJump = true;
     }
@@ -42,7 +51,6 @@ public class PlayerMovement : MonoBehaviour
         //Check for ground
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.1f, whatIsGround);
 
-        HandleInput();
         SpeedControl();
 
         //Handle drag
@@ -58,19 +66,10 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
-    private void HandleInput(){
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-
-        if(Input.GetKey(jumpKey) && readyToJump && grounded){
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
-    }
-
+    //Tomando el valor del input system se aplica la fuerza de movimiento
     private void MovePlayer(){
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        Vector2 inputVector = playerActions.Player.Movement.ReadValue<Vector2>();
+        moveDirection = orientation.forward * inputVector.y + orientation.right * inputVector.x;
 
         if(grounded){
             rb.AddForce(moveDirection.normalized * speed * 10.0f, ForceMode.Force);
@@ -80,6 +79,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //Limita la velocidad del jugador al valor de speed
+    //Para que no pueda ir mas rapido
+    //Evita que al saltar se envale el jugador
     private void SpeedControl(){
         Vector3 flatVel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
@@ -89,12 +91,21 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
-    private void Jump(){
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+    //Aplica la fuerza de salto al personaje
+    private void Jump(InputAction.CallbackContext context){
+        if(readyToJump && grounded){
+            readyToJump = false;
+
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+
     }
 
+    //Resetea el salto
     private void ResetJump(){
         readyToJump = true;
     }
