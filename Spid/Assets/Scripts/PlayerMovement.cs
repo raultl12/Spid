@@ -14,6 +14,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float airMultiplier;
     private bool readyToJump;
 
+    //Para al wallrun, ok mi colegón.
+    public float wallRunSpeed;
+    public bool wallRunning;
+
     [Header("Ground Check")]
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask whatIsGround;
