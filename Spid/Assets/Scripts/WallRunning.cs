@@ -75,6 +75,13 @@ public class WallRunning : MonoBehaviour {
             
             if (!pm.wallRunning) StartWallRun();
 
+            if (wallRunTimer > 0) wallRunTimer -= Time.deltaTime;
+
+            if (wallRunTimer <= 0 && pm.wallRunning) {
+                exitingWall = true;
+                exitWallTimer = exitWallTime;
+            }
+
             if (Input.GetKeyDown(jumpKey)) WallJump();
 
         } 
@@ -97,6 +104,8 @@ public class WallRunning : MonoBehaviour {
 
     private void StartWallRun() {
         pm.wallRunning = true;
+
+        wallRunTimer = maxWallRunTime;
     }
 
     private void WallRunningMovement() {
