@@ -40,6 +40,15 @@ public class WallRunning : MonoBehaviour {
     private PlayerMovement pm;
     private Rigidbody rb;
 
+    PlayerInputActions playerActions;
+
+    private void Awake(){
+        //Crear el input
+        playerActions = new PlayerInputActions();
+        //Activar el mapa de entrada de jugador
+        playerActions.Player.Enable();
+    }
+
     private void Start() {
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();

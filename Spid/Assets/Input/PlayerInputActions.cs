@@ -53,6 +53,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Wall"",
+                    ""type"": ""Button"",
+                    ""id"": ""7bc0d7ab-a50b-4c3b-a7ca-5613ff8feb3f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -209,6 +218,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Camara"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7814cb3f-1f60-4420-94b5-c836b6ac8940"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Wall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -220,6 +240,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Camara = m_Player.FindAction("Camara", throwIfNotFound: true);
+        m_Player_Wall = m_Player.FindAction("Wall", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -282,6 +303,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Camara;
+    private readonly InputAction m_Player_Wall;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -289,6 +311,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Camara => m_Wrapper.m_Player_Camara;
+        public InputAction @Wall => m_Wrapper.m_Player_Wall;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -307,6 +330,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Camara.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCamara;
                 @Camara.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCamara;
                 @Camara.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCamara;
+                @Wall.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWall;
+                @Wall.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWall;
+                @Wall.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWall;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -320,6 +346,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Camara.started += instance.OnCamara;
                 @Camara.performed += instance.OnCamara;
                 @Camara.canceled += instance.OnCamara;
+                @Wall.started += instance.OnWall;
+                @Wall.performed += instance.OnWall;
+                @Wall.canceled += instance.OnWall;
             }
         }
     }
@@ -329,5 +358,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnCamara(InputAction.CallbackContext context);
+        void OnWall(InputAction.CallbackContext context);
     }
 }
