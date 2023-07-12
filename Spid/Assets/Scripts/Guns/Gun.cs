@@ -38,7 +38,7 @@ public class Gun : ScriptableObject
 
         Vector3 shootDirection = targetPoint - shootPoint.position;
 
-        GameObject currentBullet = Instantiate(bullet, shootPoint.position, Quaternion.identity);
+        GameObject currentBullet = Instantiate(bullet, shootPoint.position, shootPoint.rotation);
 
         currentBullet.GetComponent<Rigidbody>().AddForce(shootDirection.normalized * shootForce, ForceMode.Impulse);
     }
