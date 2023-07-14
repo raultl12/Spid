@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 656302150}
   - component: {fileID: 656302149}
   - component: {fileID: 656302148}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: IntroCubo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10775,7 +10775,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-208692
+  m_Name: pb_Mesh29264
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

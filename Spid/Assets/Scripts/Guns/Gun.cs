@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new Gun", menuName = "Gun")]
 public class Gun : ScriptableObject
 {
-    [SerializeField] private GameObject bullet;
+    [SerializeField] private Bullet bullet;
     [SerializeField] public Transform shootPoint;
     [SerializeField] private int shootForce;
     [SerializeField] private int magazineSize;
@@ -13,10 +13,14 @@ public class Gun : ScriptableObject
     [SerializeField] private bool allowHold;
 
     //Keys
-    [SerializeField] public KeyCode shootKey = KeyCode.Mouse0;
-    [SerializeField] public KeyCode reloadKey = KeyCode.R;
+    public KeyCode shootKey = KeyCode.Mouse0;
+    public KeyCode reloadKey = KeyCode.R;
 
-    [SerializeField] public Camera fpsCam;
+    public Camera fpsCam;
+    public GameObject bulletHole;
+
+    private GameObject currentHole;
+    
 
     private void Awake(){
         bulletsLeft = magazineSize;
@@ -31,6 +35,8 @@ public class Gun : ScriptableObject
 
         if(Physics.Raycast(ray, out hit)){
             targetPoint = hit.point;
+            currentHole = Instantiate(bulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+            currentHole.SetActive(false);
         }
         else{
             targetPoint = ray.GetPoint(75);
@@ -38,7 +44,11 @@ public class Gun : ScriptableObject
 
         Vector3 shootDirection = targetPoint - shootPoint.position;
 
-        GameObject currentBullet = Instantiate(bullet, shootPoint.position, shootPoint.rotation);
+        Bullet currentBullet = Instantiate(bullet, shootPoint.position, shootPoint.rotation);
+
+        if(currentHole != null){
+            currentBullet.SetHole(currentHole);
+        }
 
         currentBullet.GetComponent<Rigidbody>().AddForce(shootDirection.normalized * shootForce, ForceMode.Impulse);
     }

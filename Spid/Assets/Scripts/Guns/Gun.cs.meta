@@ -3,7 +3,11 @@ guid: 66c96de51c342ed4791d9e91fb6e241a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - bullet: {instanceID: 0}
+  - shootPoint: {instanceID: 0}
+  - fpsCam: {instanceID: 0}
+  - bulletHole: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

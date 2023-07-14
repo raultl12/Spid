@@ -9,6 +9,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private int lifeTime;
     [SerializeField] private GameObject sparks;
 
+    private GameObject bulletHole;
+    
+
     private void Awake(){
         rb = GetComponent<Rigidbody>();
     }
@@ -16,6 +19,7 @@ public class Bullet : MonoBehaviour
         Invoke("KillBullet", lifeTime);
     }
     private void OnCollisionEnter(Collision collision){
+        bulletHole.SetActive(true);
         KillBullet();
     }
 
@@ -25,5 +29,9 @@ public class Bullet : MonoBehaviour
         particles.Play();
         
         Destroy(gameObject, particles.main.duration);
+    }
+
+    public void SetHole(GameObject hole){
+        bulletHole = hole;
     }
 }
