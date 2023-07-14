@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c96de51c342ed4791d9e91fb6e241a, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  bullet: {fileID: 7967245087101847291, guid: ce4b68fec703ad949bd76225a0954743, type: 3}
+  bullet: {fileID: 7596404900661950621, guid: ce4b68fec703ad949bd76225a0954743, type: 3}
   shootPoint: {fileID: 0}
   shootForce: 100
   magazineSize: 16
@@ -21,3 +21,5 @@ MonoBehaviour:
   shootKey: 323
   reloadKey: 114
   fpsCam: {fileID: 0}
+  bulletHole: {fileID: 3601213607750131442, guid: d55d03dc0d9b5e34f9d044efc6d3f850,
+    type: 3}
