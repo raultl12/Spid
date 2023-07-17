@@ -131,22 +131,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< Updated upstream
-  - component: {fileID: 656302152}
-  - component: {fileID: 656302151}
-  - component: {fileID: 656302150}
-  - component: {fileID: 656302149}
-  - component: {fileID: 656302148}
-  m_Layer: 3
-  m_Name: IntroCubo
-=======
   - component: {fileID: 123994767}
   - component: {fileID: 123994766}
   - component: {fileID: 123994765}
   - component: {fileID: 123994764}
   m_Layer: 5
   m_Name: Canvas
->>>>>>> Stashed changes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -727,11 +717,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream
-  m_Name: pb_Mesh29264
-=======
   m_Name: pb_Mesh-159628
->>>>>>> Stashed changes
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
