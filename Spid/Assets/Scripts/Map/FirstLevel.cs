@@ -46,10 +46,26 @@ public class FirstLevel : MonoBehaviour
         }
 
         MostrarObjetivos();
+    }
 
-        if (objetivo1Cumplido && objetivo2Cumplido && objetivo3Cumplido && objetivo4Cumplido)
-        {
-            bloqueoCollider.enabled = false;
+    private void OnCollisionEnter(Collision other) {
+        
+        if (other.gameObject.CompareTag("Player")) {
+            
+            if (objetivo1Cumplido && objetivo2Cumplido && objetivo3Cumplido && objetivo4Cumplido) {
+                // Desactivar el collider para permitir el paso
+                bloqueoCollider.enabled = false;
+            } 
+        }
+    }
+
+    private void OnCollisionExit(Collision other) {
+        
+        Invoke("resetearObjetivos", 2.0f);
+
+        if (other.gameObject.CompareTag("Player")) {
+            // Activar el collider nuevamente al salir de la zona de la puerta
+            bloqueoCollider.enabled = true;
         }
     }
 
@@ -92,5 +108,13 @@ public class FirstLevel : MonoBehaviour
         {
             textoObjetivos.text += $"Objetivo 4: Usar D para caminar hacia la derecha\n";
         }
+    }
+    
+    private void resetearObjetivos() {
+        
+        objetivo1Cumplido = false;
+        objetivo2Cumplido = false;
+        objetivo3Cumplido = false;
+        objetivo4Cumplido = false;
     }
 }
