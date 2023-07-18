@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
 [CreateAssetMenu(fileName = "new Gun", menuName = "Gun")]
 public class Gun : ScriptableObject
 {
     [SerializeField] private Bullet bullet;
     [SerializeField] public Transform shootPoint;
     [SerializeField] private int shootForce;
-    [SerializeField] private int magazineSize;
+    [SerializeField] private int magazineSize = 16;
     private int bulletsLeft;
     [SerializeField] private float timeBetweenShots;
     [SerializeField] private bool allowHold;
