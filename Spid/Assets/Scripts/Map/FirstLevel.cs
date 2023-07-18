@@ -11,7 +11,7 @@ public class FirstLevel : MonoBehaviour
     private bool objetivo3Cumplido;
     private bool objetivo4Cumplido;
 
-    private BoxCollider bloqueoCollider;
+    public BoxCollider bloqueoCollider;
 
     private void Start()
     {
@@ -69,7 +69,7 @@ public class FirstLevel : MonoBehaviour
         }
     }
 
-    private void MostrarObjetivos()
+    public void MostrarObjetivos()
     {
         textoObjetivos.text = "Objetivos:\n";
 
@@ -110,7 +110,7 @@ public class FirstLevel : MonoBehaviour
         }
     }
     
-    private void resetearObjetivos() {
+    public void resetearObjetivos() {
         
         objetivo1Cumplido = false;
         objetivo2Cumplido = false;
