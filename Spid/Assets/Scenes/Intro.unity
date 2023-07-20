@@ -1189,6 +1189,7 @@ GameObject:
   - component: {fileID: 451144439}
   - component: {fileID: 451144438}
   - component: {fileID: 451144437}
+  - component: {fileID: 451144444}
   m_Layer: 3
   m_Name: ZonaWallrun
   m_TagString: ZonaWallrun
@@ -1532,6 +1533,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &451144444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451144436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 893048dcecfaf7c4c8d33785df725c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelObjetivos: {fileID: 342016156}
+  textoObjetivos: {fileID: 202571208}
+  bloqueoCollider: {fileID: 451144437}
 --- !u!43 &584124515
 Mesh:
   m_ObjectHideFlags: 0
@@ -3978,6 +3994,7 @@ GameObject:
   - component: {fileID: 1231895672}
   - component: {fileID: 1231895671}
   - component: {fileID: 1231895677}
+  - component: {fileID: 1231895678}
   m_Layer: 3
   m_Name: ZonaWASD
   m_TagString: ZonaWASD
@@ -4321,6 +4338,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 20, y: 20, z: 42}
   m_Center: {x: 0, y: 0, z: -0.5}
+--- !u!114 &1231895678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231895670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 893048dcecfaf7c4c8d33785df725c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelObjetivos: {fileID: 342016156}
+  textoObjetivos: {fileID: 202571208}
+  bloqueoCollider: {fileID: 1231895677}
 --- !u!850595691 &1335921908
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -5634,7 +5666,7 @@ PrefabInstance:
     - target: {fileID: 1673216789640863641, guid: bb22dd34ecd3f48449ec6251468fd33f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 35.05
+      value: 77.61
       objectReference: {fileID: 0}
     - target: {fileID: 1673216789640863641, guid: bb22dd34ecd3f48449ec6251468fd33f,
         type: 3}
@@ -7216,6 +7248,7 @@ GameObject:
   - component: {fileID: 1719819887}
   - component: {fileID: 1719819886}
   - component: {fileID: 1719819885}
+  - component: {fileID: 1719819892}
   m_Layer: 3
   m_Name: ZonaSpace
   m_TagString: ZonaSpace
@@ -7559,6 +7592,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1719819892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719819884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 893048dcecfaf7c4c8d33785df725c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelObjetivos: {fileID: 342016156}
+  textoObjetivos: {fileID: 202571208}
+  bloqueoCollider: {fileID: 1719819885}
 --- !u!1 &1856415331
 GameObject:
   m_ObjectHideFlags: 0
@@ -7689,6 +7737,7 @@ GameObject:
   - component: {fileID: 1956480180}
   - component: {fileID: 1956480179}
   - component: {fileID: 1956480178}
+  - component: {fileID: 1956480185}
   m_Layer: 3
   m_Name: ZonaSlide
   m_TagString: ZonaSlide
@@ -8032,3 +8081,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1956480185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956480177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 893048dcecfaf7c4c8d33785df725c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelObjetivos: {fileID: 342016156}
+  textoObjetivos: {fileID: 202571208}
+  bloqueoCollider: {fileID: 1956480178}
