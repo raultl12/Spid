@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Objetivo : MonoBehaviour {
+[System.Serializable]
+public class Objetivo {
     
     public string nombre;
     public string descripcion;

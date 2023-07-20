@@ -88,7 +88,6 @@ public class FirstLevel : MonoBehaviour
                 
                 break;
         }
-        Debug.Log(zonaActual);
     }
 
     private void OnCollisionEnter(Collision other) {
@@ -144,12 +143,12 @@ public class FirstLevel : MonoBehaviour
             zonaActual = ZonaActual.WASD;
             MostrarObjetivos(objetivosWASD);
 
-        } else if (other.CompareTag("ZonaSaltos")) {
+        } else if (other.CompareTag("ZonaSpace")) {
             
             zonaActual = ZonaActual.Saltos;
             MostrarObjetivos(objetivosSaltos);
 
-        } else if (other.CompareTag("ZonaDeslizar")) {
+        } else if (other.CompareTag("ZonaSlide")) {
             
             zonaActual = ZonaActual.Deslizar;
             MostrarObjetivos(objetivosDeslizar);
