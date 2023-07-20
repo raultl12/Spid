@@ -1,120 +1,224 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class FirstLevel : MonoBehaviour
 {
     public GameObject panelObjetivos;
     public TextMeshProUGUI textoObjetivos;
 
-    private bool objetivo1Cumplido;
-    private bool objetivo2Cumplido;
-    private bool objetivo3Cumplido;
-    private bool objetivo4Cumplido;
+    private List<Objetivo> objetivosWASD = new List<Objetivo>();
+    private List<Objetivo> objetivosSaltos = new List<Objetivo>();
+    private List<Objetivo> objetivosDeslizar = new List<Objetivo>();
+    private List<Objetivo> objetivosWallrun = new List<Objetivo>();
 
     public BoxCollider bloqueoCollider;
+
+    public enum ZonaActual {
+        WASD,
+        Saltos,
+        Deslizar,
+        Wallrun
+    }
+
+    private ZonaActual zonaActual;
 
     private void Start()
     {
         bloqueoCollider = GetComponent<BoxCollider>();
         bloqueoCollider.enabled = true;
 
-        objetivo1Cumplido = false;
-        objetivo2Cumplido = false;
-        objetivo3Cumplido = false;
-        objetivo4Cumplido = false;
+        // Crear y agregar objetivos para la zona WASD
+        objetivosWASD.Add(new Objetivo("Objetivo 1", "Usar W para avanzar"));
+        objetivosWASD.Add(new Objetivo("Objetivo 2", "Usar S para retroceder"));
+        objetivosWASD.Add(new Objetivo("Objetivo 3", "Usar A para caminar hacia la izquierda"));
+        objetivosWASD.Add(new Objetivo("Objetivo 4", "Usar D para caminar hacia la derecha"));
 
-        MostrarObjetivos();
+        // Crear y agregar objetivos para la zona de saltos
+        objetivosSaltos.Add(new Objetivo("Objetivo 1", "Usar Espacio para saltar"));
+        objetivosSaltos.Add(new Objetivo("Objetivo 2", "Salta hasta alcanzar la plataforma más alta"));
+
+        // Crear y agregar objetivos para la zona de deslizar
+        objetivosDeslizar.Add(new Objetivo("Objetivo 1", "Usar LeftCtrl para deslizar"));
+        objetivosDeslizar.Add(new Objetivo("Objetivo 2", "Supera los obstáculos utilizando las mecánicas anteriores"));
+
+        // Crear y agregar objetivos para la zona de wallrun
+        objetivosWallrun.Add(new Objetivo("Objetivo 1", "Salta a una pared para comenzar el wallrun"));
+        objetivosWallrun.Add(new Objetivo("Objetivo 2", "Supera los obstáculos para completar los movimientos básicos"));
+
+        MostrarObjetivos(objetivosWASD); // Aquí puedes llamar al método correspondiente para la zona inicial.
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            objetivo1Cumplido = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            objetivo2Cumplido = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            objetivo3Cumplido = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            objetivo4Cumplido = true;
-        }
+        // Comprobar la zona actual antes de permitir completar o mostrar los objetivos
+        switch (zonaActual) {
+            
+            case ZonaActual.WASD:
+                if (Input.GetKeyDown(KeyCode.W)) {
+                    MarcarObjetivoCumplido(objetivosWASD, "Objetivo 1");
+                }
+                else if (Input.GetKeyDown(KeyCode.S)) {
+                    MarcarObjetivoCumplido(objetivosWASD, "Objetivo 2");
+                }
+                else if (Input.GetKeyDown(KeyCode.A)) {
+                    MarcarObjetivoCumplido(objetivosWASD, "Objetivo 3");
+                }
+                else if (Input.GetKeyDown(KeyCode.D)) {
+                    MarcarObjetivoCumplido(objetivosWASD, "Objetivo 4");
+                }
+                break;
+            
+            case ZonaActual.Saltos:
+                
+                if (Input.GetKeyDown(KeyCode.Space)) {
+                    MarcarObjetivoCumplido(objetivosSaltos, "Objetivo 1");
+                }
+                break;
+            
+            case ZonaActual.Deslizar:
+                
+                if (Input.GetKeyDown(KeyCode.LeftControl)) {
+                    MarcarObjetivoCumplido(objetivosDeslizar, "Objetivo 1");
+                }
 
-        MostrarObjetivos();
+                break;
+            
+            case ZonaActual.Wallrun:
+                
+                break;
+        }
+        Debug.Log(zonaActual);
     }
 
     private void OnCollisionEnter(Collision other) {
         
         if (other.gameObject.CompareTag("Player")) {
+            switch (zonaActual) {
+
+                case ZonaActual.WASD:
+
+                    if (SonObjetivosCompletados(objetivosWASD)) {
+                        zonaActual = ZonaActual.Saltos;
+                        MostrarObjetivos(objetivosSaltos);
+                        bloqueoCollider.enabled = false;
+                    }
+
+                    break;
+
+                case ZonaActual.Saltos:
+
+                    if (SonObjetivosCompletados(objetivosSaltos)) {
+                        zonaActual = ZonaActual.Deslizar;
+                        MostrarObjetivos(objetivosDeslizar);
+                        bloqueoCollider.enabled = false;
+                    }
+
+                    break;
+
+                case ZonaActual.Deslizar:
+
+                    if (SonObjetivosCompletados(objetivosDeslizar)) {
+                        zonaActual = ZonaActual.Wallrun; 
+                        MostrarObjetivos(objetivosWallrun);
+                        bloqueoCollider.enabled = false; 
+                    }
+
+                    break;
+
+                case ZonaActual.Wallrun:
+
+                    if (SonObjetivosCompletados(objetivosWallrun)) {
+                        // Se acaba la escena
+                    }
+
+                    break;
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        
+        if (other.CompareTag("ZonaWASD")) {
             
-            if (objetivo1Cumplido && objetivo2Cumplido && objetivo3Cumplido && objetivo4Cumplido) {
-                // Desactivar el collider para permitir el paso
-                bloqueoCollider.enabled = false;
-            } 
+            zonaActual = ZonaActual.WASD;
+            MostrarObjetivos(objetivosWASD);
+
+        } else if (other.CompareTag("ZonaSaltos")) {
+            
+            zonaActual = ZonaActual.Saltos;
+            MostrarObjetivos(objetivosSaltos);
+
+        } else if (other.CompareTag("ZonaDeslizar")) {
+            
+            zonaActual = ZonaActual.Deslizar;
+            MostrarObjetivos(objetivosDeslizar);
+
+        } else if (other.CompareTag("ZonaWallrun")) {
+            
+            zonaActual = ZonaActual.Wallrun;
+            MostrarObjetivos(objetivosWallrun);
         }
     }
 
     private void OnCollisionExit(Collision other) {
         
-        Invoke("resetearObjetivos", 2.0f);
+        textoObjetivos.text = "Objetivos:\n"; // Limpiar el panel de objetivos al salir de las zonas
+        
+        switch (zonaActual) {
+            
+            case ZonaActual.WASD:
+                MostrarObjetivos(objetivosWASD);
+                break;
 
-        if (other.gameObject.CompareTag("Player")) {
-            // Activar el collider nuevamente al salir de la zona de la puerta
-            bloqueoCollider.enabled = true;
+            case ZonaActual.Saltos:
+                MostrarObjetivos(objetivosSaltos);
+                break;
+
+            case ZonaActual.Deslizar:
+                MostrarObjetivos(objetivosDeslizar);
+                break;
+
+            case ZonaActual.Wallrun:
+                MostrarObjetivos(objetivosWallrun);
+                break;
         }
     }
 
-    public void MostrarObjetivos()
-    {
+    private void MostrarObjetivos(List<Objetivo> listaObjetivos) {
+        
         textoObjetivos.text = "Objetivos:\n";
 
-        if (objetivo1Cumplido)
-        {
-            textoObjetivos.text += $"<color=green>Objetivo 1: Usar W para avanzar (Completado)</color>\n";
-        }
-        else
-        {
-            textoObjetivos.text += $"Objetivo 1: Usar W para avanzar\n";
-        }
-
-        if (objetivo2Cumplido)
-        {
-            textoObjetivos.text += $"<color=green>Objetivo 2: Usar S para retroceder (Completado)</color>\n";
-        }
-        else
-        {
-            textoObjetivos.text += $"Objetivo 2: Usar S para retroceder\n";
-        }
-
-        if (objetivo3Cumplido)
-        {
-            textoObjetivos.text += $"<color=green>Objetivo 3: Usar A para caminar hacia la izquierda (Completado)</color>\n";
-        }
-        else
-        {
-            textoObjetivos.text += $"Objetivo 3: Usar A para caminar hacia la izquierda\n";
-        }
-
-        if (objetivo4Cumplido)
-        {
-            textoObjetivos.text += $"<color=green>Objetivo 4: Usar D para caminar hacia la derecha (Completado)</color>\n";
-        }
-        else
-        {
-            textoObjetivos.text += $"Objetivo 4: Usar D para caminar hacia la derecha\n";
+        foreach (Objetivo objetivo in listaObjetivos) {
+            
+            if (objetivo.cumplido) {
+                textoObjetivos.text += $"<color=green>{objetivo.nombre}: {objetivo.descripcion} (Completado)</color>\n";
+            }
+            else {
+                textoObjetivos.text += $"{objetivo.nombre}: {objetivo.descripcion}\n";
+            }
         }
     }
-    
-    public void resetearObjetivos() {
+
+    private bool SonObjetivosCompletados(List<Objetivo> listaObjetivos) {
         
-        objetivo1Cumplido = false;
-        objetivo2Cumplido = false;
-        objetivo3Cumplido = false;
-        objetivo4Cumplido = false;
+        foreach (Objetivo objetivo in listaObjetivos) {
+            
+            if (!objetivo.cumplido) {
+                
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void MarcarObjetivoCumplido(List<Objetivo> listaObjetivos, string nombreObjetivo) {
+        
+        Objetivo objetivo = listaObjetivos.Find(obj => obj.nombre == nombreObjetivo);
+
+        if (objetivo != null && !objetivo.cumplido) {
+            objetivo.cumplido = true;
+            MostrarObjetivos(listaObjetivos);
+        }
     }
 }
