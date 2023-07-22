@@ -17,8 +17,13 @@ public class Pistol : MonoBehaviour
     private Animator animator;
     private string currentState;
 
+    private bool canShoot = true;
+    private bool canReload = true;
+
     //Animations
-    private string SHOOT = "ShootAnimation";
+    private string IDLE = "GunIdle";
+    private string SHOOT = "ShootAnim";
+    private string RELOAD = "GunReload";
 
     private void Awake(){
         pistol.shootPoint = shootPoint;
@@ -27,7 +32,11 @@ public class Pistol : MonoBehaviour
         bulletsLeft = magazineSize;
         bulletsText.SetText(bulletsLeft.ToString());
         textColor = bulletsText.color;
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+    }
+
+    private void Start(){
+        ChangeAnimationState(IDLE);
     }
 
     private void Update(){
@@ -36,21 +45,30 @@ public class Pistol : MonoBehaviour
 
     private void HandleInput(){
         if(Input.GetKeyDown(pistol.shootKey)){
-            if(bulletsLeft > 0){
-                //ChangeAnimationState(SHOOT);
+            if(bulletsLeft > 0 && canShoot){
+                canReload = false;
+                ChangeAnimationState(SHOOT);
+                Invoke("SetGunIdle", 0.1f);
                 pistol.Shoot();
                 bulletsLeft--;
                 bulletsText.SetText(bulletsLeft.ToString());
+                Invoke("ResetCanReload", 0.1f);
             }
             if(bulletsLeft == 0){
                 bulletsText.color = Color.red;
             }
         }
 
-        if(Input.GetKeyDown(pistol.reloadKey)){
+        if(Input.GetKeyDown(pistol.reloadKey) && canReload && bulletsLeft < magazineSize){
+            canReload = false;
+            canShoot = false;
+            ChangeAnimationState(RELOAD);
+            Invoke("SetGunIdle", 0.3f);
             bulletsLeft = magazineSize;
             bulletsText.SetText(bulletsLeft.ToString());
             bulletsText.color = textColor;
+            Invoke("ResetCanShoot", 0.3f);
+            Invoke("ResetCanReload", 0.3f);
         }
     }
 
@@ -60,5 +78,17 @@ public class Pistol : MonoBehaviour
         animator.Play(newState);
 
         currentState = newState;
+    }
+
+    private void SetGunIdle(){
+        ChangeAnimationState(IDLE);
+    }
+
+    private void ResetCanShoot(){
+        canShoot = true;
+    }
+
+    private void ResetCanReload(){
+        canReload = true;
     }
 }
