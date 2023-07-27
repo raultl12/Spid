@@ -260,6 +260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {fileID: 328480699333103710}
   playerObj: {fileID: 1673216789640863641}
+  gunObject: {fileID: 2453264414685992961}
   maxSlideTime: 0.75
   slideForce: 200
   slideYscale: 0.5

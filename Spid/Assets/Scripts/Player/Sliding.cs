@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Sliding : MonoBehaviour {
-
     [Header("References")]
-    public Transform orientation;
-    public Transform playerObj;
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform playerObj;
     private Rigidbody rb;
-    private PlayerMovement pm;
+    [SerializeField] private Transform gunObject;
 
     [Header("Slider")]
     public float maxSlideTime;
@@ -17,6 +16,8 @@ public class Sliding : MonoBehaviour {
 
     public float slideYscale;
     private float startYscale;
+
+    private float scaleFactor = 0.5f;
 
     [Header("Input")]
     public KeyCode slideKey = KeyCode.LeftControl;
@@ -27,7 +28,6 @@ public class Sliding : MonoBehaviour {
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
-        pm = GetComponent<PlayerMovement>();
 
         startYscale = playerObj.localScale.y;
     }
@@ -36,7 +36,7 @@ public class Sliding : MonoBehaviour {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(slideKey) && (horizontalInput != 0 || verticalInput != 0)) {
+        if (Input.GetKeyDown(slideKey) && (horizontalInput != 0 || verticalInput != 0) && !desliza) {
             StartSlide();
         }
     }
@@ -48,7 +48,9 @@ public class Sliding : MonoBehaviour {
     private void StartSlide() {
         desliza = true;
 
-        playerObj.localScale = new Vector3(playerObj.localScale.x, slideYscale, playerObj.localScale.z);
+        playerObj.localScale = new Vector3(playerObj.localScale.x, playerObj.localScale.y * scaleFactor, playerObj.localScale.z);
+        gunObject.localScale = new Vector3(gunObject.localScale.x, gunObject.localScale.y / scaleFactor, gunObject.localScale.z);
+        gunObject.position = new Vector3(gunObject.position.x, gunObject.position.y - 10f, gunObject.position.z);
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
         slideTimer = maxSlideTime;
@@ -68,6 +70,8 @@ public class Sliding : MonoBehaviour {
     private void StopSlide() {
         desliza = false;
         
-        playerObj.localScale = new Vector3(playerObj.localScale.x, startYscale, playerObj.localScale.z);
+        playerObj.localScale = new Vector3(playerObj.localScale.x, playerObj.localScale.y / scaleFactor, playerObj.localScale.z);
+        gunObject.localScale = new Vector3(gunObject.localScale.x, gunObject.localScale.y * scaleFactor, gunObject.localScale.z);
+        gunObject.position = new Vector3(gunObject.position.x, gunObject.position.y + 10f, gunObject.position.z);
     }
 }
